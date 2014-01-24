@@ -22,6 +22,11 @@ namespace Thecentury.Linq
 			return collection.WithCount( collection.Count );
 		}
 
+		public static IReadOnlyCollection<T> AsReadOnlyCollection<T>( this IReadOnlyCollection<T> collection )
+		{
+			return collection;
+		}
+
 		public static IOrderedReadOnlyCollection<T> OrderBy<T, TKey>( this IReadOnlyCollection<T> collection,
 			Func<T, TKey> keySelector )
 		{
@@ -238,11 +243,34 @@ namespace Thecentury.Linq
 			return Enumerable.Repeat( element, 1 ).WithCount( 1 );
 		}
 
-		// ElementAt
-		// First/OrDefault/Single...
-		// DefaultIfEmpty
-		// ElementAtOrDefault
-		// Last
+		public static IReadOnlyCollection<T> Prepend<T>( this IReadOnlyCollection<T> collection, T item )
+		{
+			return EnumerableEx.Yield( item ).Concat( collection ).WithCount( collection.Count + 1 );
+		}
+
+		public static IReadOnlyCollection<T> Prepend<T>( this IReadOnlyCollection<T> collection, params T[] items )
+		{
+			if ( items == null )
+			{
+				throw new ArgumentNullException( "items" );
+			}
+
+			return items.Concat( collection );
+		}
+
+		public static IReadOnlyCollection<T> Append<T>( this IReadOnlyCollection<T> collection, T item )
+		{
+			return collection.Concat( EnumerableEx.Yield( item ) ).WithCount( collection.Count + 1 );
+		}
+
+		public static IReadOnlyCollection<T> Append<T>( this IReadOnlyCollection<T> collection, params T[] items )
+		{
+			if ( items == null )
+			{
+				throw new ArgumentNullException( "items" );
+			}
+			return collection.Concat( items ).WithCount( collection.Count + items.Length );
+		}
 	}
 
 	internal sealed class ReadOnlyCollection<T> : IReadOnlyCollection<T>

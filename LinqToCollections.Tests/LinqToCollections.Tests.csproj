@@ -53,7 +53,7 @@
     <Compile Include="ToListBenchmark.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LinqToCollection\LinqToCollections.csproj">
+    <ProjectReference Include="..\LinqToCollections\LinqToCollections.csproj">
       <Project>{7117c856-c210-470d-9204-b56c737744b0}</Project>
       <Name>LinqToCollections</Name>
     </ProjectReference>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Thecentury.Linq
@@ -146,7 +147,7 @@ namespace Thecentury.Linq
 			return collection.AsEnumerable().All( predicate );
 		}
 
-		public static IReadOnlyCollection<TResult> Cast<T, TResult>( this IReadOnlyCollection<T> collection )
+		public static IReadOnlyCollection<TResult> Cast<T, TResult>( this IReadOnlyCollection<T> collection ) where TResult : T
 		{
 			return collection.AsEnumerable().Cast<TResult>().WithCountOf( collection );
 		}
@@ -273,6 +274,7 @@ namespace Thecentury.Linq
 		}
 	}
 
+	[DebuggerDisplay( "Count = {Count}" )]
 	internal sealed class ReadOnlyCollection<T> : IReadOnlyCollection<T>
 	{
 		private readonly IEnumerable<T> _enumerable;

@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Thecentury.Linq
 {
+	[DebuggerDisplay( "Count = {Count}" )]
 	internal sealed class OrderedReadOnlyCollection<T> : IOrderedReadOnlyCollection<T>
 	{
 		private readonly IOrderedEnumerable<T> _enumerable;

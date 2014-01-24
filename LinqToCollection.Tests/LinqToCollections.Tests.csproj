@@ -7,8 +7,8 @@
     <ProjectGuid>{72EE421C-E822-45F7-A040-5F48658D6215}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LinqToCollection.Tests</RootNamespace>
-    <AssemblyName>LinqToCollection.Tests</AssemblyName>
+    <RootNamespace>LinqToCollections.Tests</RootNamespace>
+    <AssemblyName>LinqToCollections.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -53,9 +53,9 @@
     <Compile Include="ToListBenchmark.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LinqToCollection\LinqToCollection.csproj">
+    <ProjectReference Include="..\LinqToCollection\LinqToCollections.csproj">
       <Project>{7117c856-c210-470d-9204-b56c737744b0}</Project>
-      <Name>LinqToCollection</Name>
+      <Name>LinqToCollections</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

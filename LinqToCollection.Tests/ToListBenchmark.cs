@@ -5,7 +5,7 @@ using System.Linq;
 using NUnit.Framework;
 using Thecentury.Linq;
 
-namespace LinqToCollection.Tests
+namespace LinqToCollections.Tests
 {
 	[TestFixture]
 	public sealed class ToListBenchmark

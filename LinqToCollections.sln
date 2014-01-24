@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToCollections", "LinqToCollection\LinqToCollections.csproj", "{7117C856-C210-470D-9204-B56C737744B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToCollections", "LinqToCollections\LinqToCollections.csproj", "{7117C856-C210-470D-9204-B56C737744B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7D1CFC8A-9AA0-4BC7-9069-CD42AABD3D62}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7D1CFC
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToCollections.Tests", "LinqToCollection.Tests\LinqToCollections.Tests.csproj", "{72EE421C-E822-45F7-A040-5F48658D6215}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToCollections.Tests", "LinqToCollections.Tests\LinqToCollections.Tests.csproj", "{72EE421C-E822-45F7-A040-5F48658D6215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

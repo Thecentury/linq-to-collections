@@ -12,10 +12,20 @@ namespace Thecentury.Linq
 			return collection.AsEnumerable().Select( selector ).WithCountOf( collection );
 		}
 
+		public static IReadOnlyCollection<object> AsReadOnlyCollection( this ICollection collection )
+		{
+			return collection.Cast<object>().WithCount( collection.Count );
+		}
+
+		public static IReadOnlyCollection<T> AsReadOnlyCollection<T>( this ICollection<T> collection )
+		{
+			return collection.WithCount( collection.Count );
+		}
+
 		public static IOrderedReadOnlyCollection<T> OrderBy<T, TKey>( this IReadOnlyCollection<T> collection,
 			Func<T, TKey> keySelector )
 		{
-			return collection.AsEnumerable().OrderBy( keySelector ).WithCountOf( collection );
+			return collection.OrderBy( keySelector, null );
 		}
 
 		public static IOrderedReadOnlyCollection<T> OrderBy<T, TKey>( this IReadOnlyCollection<T> collection,
@@ -27,7 +37,7 @@ namespace Thecentury.Linq
 		public static IOrderedReadOnlyCollection<T> OrderByDescending<T, TKey>( this IReadOnlyCollection<T> collection,
 			Func<T, TKey> keySelector )
 		{
-			return collection.AsEnumerable().OrderByDescending( keySelector ).WithCount( collection.Count );
+			return collection.OrderByDescending( keySelector, null );
 		}
 
 		public static IOrderedReadOnlyCollection<T> OrderByDescending<T, TKey>( this IReadOnlyCollection<T> collection,
@@ -39,7 +49,7 @@ namespace Thecentury.Linq
 		public static IOrderedReadOnlyCollection<T> ThenBy<T, TKey>( this IOrderedReadOnlyCollection<T> source,
 			Func<T, TKey> keySelector )
 		{
-			return source.AsOrderedEnumerable().ThenBy( keySelector ).WithCount( source.Count );
+			return source.ThenBy( keySelector, null );
 		}
 
 		public static IOrderedReadOnlyCollection<T> ThenBy<T, TKey>( this IOrderedReadOnlyCollection<T> source,
@@ -51,7 +61,7 @@ namespace Thecentury.Linq
 		public static IOrderedReadOnlyCollection<T> ThenByDescending<T, TKey>( this IOrderedReadOnlyCollection<T> source,
 			Func<T, TKey> keySelector )
 		{
-			return source.AsOrderedEnumerable().ThenByDescending( keySelector ).WithCount( source.Count );
+			return source.ThenByDescending( keySelector, null );
 		}
 
 		public static IOrderedReadOnlyCollection<T> ThenByDescending<T, TKey>( this IOrderedReadOnlyCollection<T> source,
@@ -80,7 +90,7 @@ namespace Thecentury.Linq
 
 		public static T[] ToArray<T>( this IReadOnlyCollection<T> collection )
 		{
-			var array = new T[ collection.Count ];
+			var array = new T[collection.Count];
 			if ( collection.Count == 0 )
 			{
 				return array;
@@ -89,7 +99,7 @@ namespace Thecentury.Linq
 			int index = 0;
 			foreach ( var element in collection )
 			{
-				array[ index ] = element;
+				array[index] = element;
 				index++;
 			}
 
@@ -138,8 +148,17 @@ namespace Thecentury.Linq
 
 		public static IReadOnlyCollection<T> Reverse<T>( this IReadOnlyCollection<T> collection )
 		{
-			// todo brinchuk reverse with awareness of count
-			return collection.AsEnumerable().Reverse().WithCountOf( collection );
+			var array = collection.ToArray();
+
+			return Reversed( array ).WithCount( array.Length );
+		}
+
+		private static IEnumerable<T> Reversed<T>( T[] source )
+		{
+			for ( var i = source.Length - 1; i >= 0; i-- )
+			{
+				yield return source[i];
+			}
 		}
 
 		public static IReadOnlyCollection<T> Skip<T>( this IReadOnlyCollection<T> collection, int count )
@@ -157,74 +176,73 @@ namespace Thecentury.Linq
 			return collection.AsEnumerable().Take( count ).WithCount( Math.Min( collection.Count, count ) );
 		}
 
+		public static IReadOnlyCollection<T> Concat<T>( this IReadOnlyCollection<T> first, IReadOnlyCollection<T> second )
+		{
+			return first.AsEnumerable().Concat( second ).WithCount( first.Count + second.Count );
+		}
+
+		public static bool Contains<T>( this IReadOnlyCollection<T> collection, T value )
+		{
+			return collection.Contains( value, null );
+		}
+
+		public static bool Contains<T>( this IReadOnlyCollection<T> collection, T value, IEqualityComparer<T> comparer )
+		{
+			if ( collection.Count == 0 )
+			{
+				return false;
+			}
+
+			return collection.AsEnumerable().Contains( value, comparer );
+		}
+
+		public static bool SequenceEqual<T>( this IReadOnlyCollection<T> first, IReadOnlyCollection<T> second )
+		{
+			return SequenceEqual( first, second, null );
+		}
+
+		public static bool SequenceEqual<T>( this IReadOnlyCollection<T> first, IReadOnlyCollection<T> second,
+			IEqualityComparer<T> comparer )
+		{
+			if ( first.Count != second.Count )
+			{
+				return false;
+			}
+
+			return first.AsEnumerable().SequenceEqual( second, comparer );
+		}
+
+		public static IReadOnlyCollection<TResult> Zip<TFirst, TSecond, TResult>( this IReadOnlyCollection<TFirst> first,
+			IReadOnlyCollection<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector )
+		{
+			return first.AsEnumerable().Zip( second, resultSelector ).WithCount( Math.Min( first.Count, second.Count ) );
+		}
+
+		public static IReadOnlyCollection<T> Empty<T>()
+		{
+			return Enumerable.Empty<T>().WithCount( 0 );
+		}
+
+		public static IReadOnlyCollection<int> Range( int start, int count )
+		{
+			return Enumerable.Range( start, count ).WithCount( count );
+		}
+
+		public static IReadOnlyCollection<T> Repeat<T>( T element, int count )
+		{
+			return Enumerable.Repeat( element, count ).WithCount( count );
+		}
+
+		public static IReadOnlyCollection<T> Yield<T>( T element )
+		{
+			return Enumerable.Repeat( element, 1 ).WithCount( 1 );
+		}
+
 		// ElementAt
-		// Empty
-		// Repeat
-		// ToLookup
-		// SequenceEqual
 		// First/OrDefault/Single...
 		// DefaultIfEmpty
 		// ElementAtOrDefault
-	}
-
-	internal static class EnumerableExtensions
-	{
-		public static IReadOnlyCollection<T> WithCount<T>( this IEnumerable<T> enumerable, int count )
-		{
-			return new ReadOnlyCollection<T>( enumerable, count );
-		}
-
-		public static IReadOnlyCollection<T1> WithCountOf<T1, T2>( this IEnumerable<T1> enumerable, IReadOnlyCollection<T2> collection )
-		{
-			return new ReadOnlyCollection<T1>( enumerable, collection.Count );
-		}
-
-		public static IOrderedReadOnlyCollection<T> WithCount<T>( this IOrderedEnumerable<T> enumerable, int count )
-		{
-			return new OrderedReadOnlyCollection<T>( enumerable, count );
-		}
-
-		public static IOrderedReadOnlyCollection<T1> WithCountOf<T1, T2>( this IOrderedEnumerable<T1> enumerable, IReadOnlyCollection<T2> collection )
-		{
-			return new OrderedReadOnlyCollection<T1>( enumerable, collection.Count );
-		}
-	}
-
-	public interface IOrderedReadOnlyCollection<T> : IOrderedEnumerable<T>, IReadOnlyCollection<T>
-	{
-	}
-
-	internal sealed class OrderedReadOnlyCollection<T> : IOrderedReadOnlyCollection<T>
-	{
-		private readonly IOrderedEnumerable<T> _enumerable;
-		private readonly int _count;
-
-		public OrderedReadOnlyCollection( IOrderedEnumerable<T> enumerable, int count )
-		{
-			// todo brinchuk count >=0
-			_count = count;
-			_enumerable = enumerable;
-		}
-
-		public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>( Func<T, TKey> keySelector, IComparer<TKey> comparer, bool @descending )
-		{
-			return _enumerable.CreateOrderedEnumerable( keySelector, comparer, @descending );
-		}
-
-		public IEnumerator<T> GetEnumerator()
-		{
-			return _enumerable.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-
-		public int Count
-		{
-			get { return _count; }
-		}
+		// Last
 	}
 
 	internal sealed class ReadOnlyCollection<T> : IReadOnlyCollection<T>
@@ -238,7 +256,10 @@ namespace Thecentury.Linq
 			{
 				throw new ArgumentNullException( "enumerable" );
 			}
-			// todo brinchuk count >=0
+			if ( count < 0 )
+			{
+				throw new ArgumentOutOfRangeException( "count" );
+			}
 			_count = count;
 			_enumerable = enumerable;
 		}

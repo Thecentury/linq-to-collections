@@ -33,6 +33,8 @@ namespace LinqToCollection.Tests
 
 			Assert.NotNull( list );
 			Assert.NotNull( l2 );
+
+			Assert.That( list.SequenceEqual( l2 ) );
 		}
 	}
 }

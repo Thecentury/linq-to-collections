@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="IOrderedReadOnlyCollection.cs" />
+    <Compile Include="OrderedReadOnlyCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyCollection.cs" />
   </ItemGroup>

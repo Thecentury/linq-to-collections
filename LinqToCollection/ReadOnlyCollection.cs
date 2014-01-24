@@ -170,7 +170,7 @@ namespace Thecentury.Linq
 		{
 			if ( collection.Count <= count )
 			{
-				return new ReadOnlyCollection<T>( Enumerable.Empty<T>(), 0 );
+				return new ReadOnlyCollection<T>();
 			}
 
 			return collection.AsEnumerable().Skip( count ).WithCount( collection.Count - count );
@@ -240,7 +240,7 @@ namespace Thecentury.Linq
 
 		public static IReadOnlyCollection<T> Yield<T>( T element )
 		{
-			return Enumerable.Repeat( element, 1 ).WithCount( 1 );
+			return EnumerableEx.Yield( element ).WithCount( 1 );
 		}
 
 		public static IReadOnlyCollection<T> Prepend<T>( this IReadOnlyCollection<T> collection, T item )
@@ -277,6 +277,12 @@ namespace Thecentury.Linq
 	{
 		private readonly IEnumerable<T> _enumerable;
 		private readonly int _count;
+
+		public ReadOnlyCollection()
+		{
+			_enumerable = Enumerable.Empty<T>();
+			_count = 0;
+		}
 
 		public ReadOnlyCollection( IEnumerable<T> enumerable, int count )
 		{

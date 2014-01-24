@@ -5,5 +5,5 @@ This is a subset of Linq extension methods, that preserves information about cou
 ## Usage
 
 1. Add a reference to `LinqToCollection.dll`
-2. Add a usage directive to `Thecentury.Linq`
+2. Add a using directive to `Thecentury.Linq`
 3. Use well-known Linq extension methods  

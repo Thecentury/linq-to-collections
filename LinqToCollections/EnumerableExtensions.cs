@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Thecentury.Linq
 {
-	internal static class EnumerableExtensions
+	public static class EnumerableExtensions
 	{
 		public static IReadOnlyCollection<T> WithCount<T>( this IEnumerable<T> enumerable, int count )
 		{

@@ -81,6 +81,40 @@ namespace Thecentury.Linq
 			return collection;
 		}
 
+		public static Dictionary<TKey, T> ToDictionary<T, TKey>( this IReadOnlyCollection<T> collection,
+			Func<T, TKey> keySelector )
+		{
+			return collection.ToDictionary( keySelector, v => v, null );
+		}
+
+		public static Dictionary<TKey, T> ToDictionary<T, TKey>( this IReadOnlyCollection<T> collection,
+			Func<T, TKey> keySelector, IEqualityComparer<TKey> comparer )
+		{
+			return collection.ToDictionary( keySelector, v => v, comparer );
+		}
+
+		public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>( this IReadOnlyCollection<T> collection,
+			Func<T, TKey> keySelector, Func<T, TValue> valueSelector )
+		{
+			return collection.ToDictionary( keySelector, valueSelector, null );
+		}
+
+		public static Dictionary<TKey, TValue> ToDictionary<T, TKey, TValue>( this IReadOnlyCollection<T> collection,
+			Func<T, TKey> keySelector, Func<T, TValue> valueSelector, IEqualityComparer<TKey> comparer )
+		{
+			Dictionary<TKey, TValue> dictionary = new Dictionary<TKey, TValue>( collection.Count, comparer );
+
+			foreach ( var item in collection )
+			{
+				var key = keySelector( item );
+				var value = valueSelector( item );
+
+				dictionary.Add( key, value );
+			}
+
+			return dictionary;
+		}
+
 		public static List<T> ToList<T>( this IReadOnlyCollection<T> collection )
 		{
 			var list = new List<T>( collection.Count );
